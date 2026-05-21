@@ -1,0 +1,23 @@
+---
+import { siteConfig } from '@/site.config';
+---
+
+<footer class="border-t border-gray-200 dark:border-gray-800 mt-16 py-8">
+  <div class="max-w-4xl mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
+    <div class="flex justify-center gap-4 mb-3">
+      {siteConfig.social.github && (
+        <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer"
+           class="hover:text-gray-700 dark:hover:text-gray-200 transition-colors">GitHub</a>
+      )}
+      {siteConfig.social.email && (
+        <a href={`mailto:${siteConfig.social.email}`}
+           class="hover:text-gray-700 dark:hover:text-gray-200 transition-colors">Email</a>
+      )}
+      {siteConfig.social.twitter && (
+        <a href={siteConfig.social.twitter} target="_blank" rel="noopener noreferrer"
+           class="hover:text-gray-700 dark:hover:text-gray-200 transition-colors">Twitter</a>
+      )}
+    </div>
+    <p>&copy; {new Date().getFullYear()} {siteConfig.name}. Built with Astro.</p>
+  </div>
+</footer>

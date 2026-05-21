@@ -1,0 +1,35 @@
+backend:
+  name: github
+  repo: your-username/your-repo
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: blog
+    label: 博客
+    folder: src/content/blog
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - { label: 日期, name: date, widget: datetime, format: YYYY-MM-DD }
+      - { label: 标签, name: tags, widget: list, default: [] }
+      - { label: 描述, name: description, widget: text }
+      - { label: 正文, name: body, widget: markdown }
+
+  - name: projects
+    label: 项目
+    folder: src/content/projects
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: 名称, name: title, widget: string }
+      - { label: 技术栈, name: tech, widget: list, default: [] }
+      - { label: 截图, name: image, widget: image, required: false }
+      - { label: 仓库链接, name: url, widget: string, required: false }
+      - { label: 演示链接, name: demo, widget: string, required: false }
+      - { label: 描述, name: description, widget: text }
+      - { label: 排序, name: order, widget: number, default: 0, value_type: int }
+      - { label: 正文, name: body, widget: markdown, required: false }

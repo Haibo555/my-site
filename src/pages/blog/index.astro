@@ -1,0 +1,46 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
+
+const selectedTag = Astro.url.searchParams.get('tag') || '';
+const filteredPosts = selectedTag
+  ? allPosts.filter((p) => p.data.tags.includes(selectedTag))
+  : allPosts;
+---
+
+<BaseLayout title="博客">
+  <h1 class="text-3xl font-bold mb-8">博客</h1>
+
+  {allTags.length > 0 && (
+    <div class="flex flex-wrap gap-2 mb-8">
+      <a href="/blog"
+         class={`text-sm px-3 py-1 rounded-full transition-colors ${!selectedTag
+           ? 'bg-blue-600 text-white'
+           : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
+        全部
+      </a>
+      {allTags.map((tag) => (
+        <a href={`/blog?tag=${tag}`}
+           class={`text-sm px-3 py-1 rounded-full transition-colors ${selectedTag === tag
+             ? 'bg-blue-600 text-white'
+             : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
+          {tag}
+        </a>
+      ))}
+    </div>
+  )}
+
+  {filteredPosts.length > 0 ? (
+    <div class="grid gap-6 md:grid-cols-2">
+      {filteredPosts.map((post) => <BlogCard post={post} />)}
+    </div>
+  ) : (
+    <p class="text-gray-500 dark:text-gray-400">该标签下暂无文章。</p>
+  )}
+</BaseLayout>

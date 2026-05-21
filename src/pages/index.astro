@@ -1,7 +1,67 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { siteConfig } from '@/site.config';
+import BlogCard from '@/components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const latestPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout>
-  <h1>Hello</h1>
+  <!-- Hero -->
+  <section class="text-center py-12">
+    <img src={siteConfig.avatar} alt={siteConfig.name}
+         class="w-28 h-28 rounded-full mx-auto mb-4 object-cover ring-2 ring-gray-200 dark:ring-gray-700" />
+    <h1 class="text-3xl font-bold">{siteConfig.name}</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">{siteConfig.tagline}</p>
+    <div class="flex justify-center gap-4 mt-4">
+      {siteConfig.social.github && (
+        <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer"
+           class="text-sm px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          GitHub
+        </a>
+      )}
+      {siteConfig.social.email && (
+        <a href={`mailto:${siteConfig.social.email}`}
+           class="text-sm px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          Email
+        </a>
+      )}
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="py-8 border-t border-gray-200 dark:border-gray-800">
+    <h2 class="text-2xl font-bold mb-4">关于我</h2>
+    <p class="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-line">{siteConfig.about}</p>
+  </section>
+
+  <!-- Skills -->
+  <section class="py-8 border-t border-gray-200 dark:border-gray-800">
+    <h2 class="text-2xl font-bold mb-4">技能</h2>
+    <div class="flex flex-wrap gap-2">
+      {siteConfig.skills.map((skill) => (
+        <span class="px-3 py-1 rounded-full text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+          {skill}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <!-- Latest Posts -->
+  <section class="py-8 border-t border-gray-200 dark:border-gray-800">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">最新文章</h2>
+      <a href="/blog" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">查看全部 →</a>
+    </div>
+    {latestPosts.length > 0 ? (
+      <div class="grid gap-6 md:grid-cols-3">
+        {latestPosts.map((post) => <BlogCard post={post} />)}
+      </div>
+    ) : (
+      <p class="text-gray-500 dark:text-gray-400">还没有文章。</p>
+    )}
+  </section>
 </BaseLayout>

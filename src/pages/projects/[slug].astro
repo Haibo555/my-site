@@ -1,0 +1,46 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+  <article class="max-w-2xl mx-auto">
+    {project.data.image && (
+      <img src={project.data.image} alt={project.data.title}
+           class="w-full rounded-lg mb-8 object-cover max-h-96" />
+    )}
+
+    <h1 class="text-3xl font-bold mb-4">{project.data.title}</h1>
+
+    <div class="flex flex-wrap gap-2 mb-2">
+      {project.data.tech.map((t) => (
+        <span class="text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+          {t}
+        </span>
+      ))}
+    </div>
+
+    <div class="flex gap-4 mb-8">
+      {project.data.url && (
+        <a href={project.data.url} target="_blank" rel="noopener noreferrer"
+           class="text-sm text-blue-600 dark:text-blue-400 hover:underline">源代码 →</a>
+      )}
+      {project.data.demo && (
+        <a href={project.data.demo} target="_blank" rel="noopener noreferrer"
+           class="text-sm text-blue-600 dark:text-blue-400 hover:underline">在线演示 →</a>
+      )}
+    </div>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="项目">
+  <h1 class="text-3xl font-bold mb-8">项目</h1>
+
+  {projects.length > 0 ? (
+    <div class="grid gap-6 md:grid-cols-2">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  ) : (
+    <p class="text-gray-500 dark:text-gray-400">还没有项目。</p>
+  )}
+</BaseLayout>

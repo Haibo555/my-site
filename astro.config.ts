@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [tailwind()],
-  site: 'https://your-site.vercel.app',
+  site: 'https://my-site-topaz-one-84.vercel.app',
   markdown: {
     shikiConfig: {
       theme: 'github-dark',

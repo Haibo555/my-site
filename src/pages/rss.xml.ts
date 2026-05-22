@@ -7,7 +7,7 @@ export async function GET() {
   return rss({
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
-    site: 'https://my-site-topaz-one-84.vercel.app',
+    site: 'https://haibo555.github.io',
     items: posts
       .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
       .map((post) => ({

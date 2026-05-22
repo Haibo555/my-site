@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: your-username/your-repo
+  repo: Haibo555/my-site
   branch: main
 
 media_folder: public/images
